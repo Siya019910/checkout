@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Checkout — DigitMarkT</title>
+<meta name="description" content="Complete your order with DigitMarkT." />
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+:root{
+  --accent-green:#00e676; --accent-teal:#00bcd4; --bg-dark:#020c1b; --bg-card:rgba(10,25,47,.75);
+  --text-primary:#e6f1ff; --text-muted:#8892b0; --border:rgba(0,230,118,.18); --header-h:68px; --danger:#ff5c5c;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+html,body{overflow-x:hidden;width:100%;max-width:100vw;}
+img,svg{max-width:100%;height:auto;display:block;}
+body{font-family:'Rajdhani',sans-serif; background:var(--bg-dark); color:var(--text-primary); line-height:1.6; min-height:100vh;}
+body::before{
+  content:''; position:fixed; inset:0;
+  background-image:linear-gradient(rgba(0,230,118,.03) 1px,transparent 1px),
+                    linear-gradient(90deg, rgba(0,230,118,.03) 1px,transparent 1px);
+  background-size:44px 44px; pointer-events:none; z-index:0;
+}
+header{
+  height:var(--header-h); position:sticky; top:0; z-index:1000;
+  display:flex; align-items:center; justify-content:space-between; padding:0 5%;
+  background:rgba(2,12,27,.92); backdrop-filter:blur(14px); border-bottom:1px solid var(--border);
+}
+.logo-link{display:flex; align-items:center; text-decoration:none; padding:5px; flex-shrink:0;}
+.logo-link img{height:42px; width:auto; object-fit:contain;}
+nav{display:flex; gap:1.6rem; align-items:center;}
+nav a{text-decoration:none; font-weight:600; font-size:.85rem; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; transition:color .3s; position:relative;}
+nav a::after{content:''; position:absolute; left:0; bottom:-3px; width:0; height:1px; background:var(--accent-green); transition:width .3s;}
+nav a:hover, nav a[aria-current="page"]{color:var(--accent-green);}
+nav a:hover::after, nav a[aria-current="page"]::after{width:100%;}
+.hamburger{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; z-index:1010;}
+.hamburger span{display:block; width:22px; height:2px; background:var(--accent-green); border-radius:2px; transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+@media (max-width:860px){
+  .hamburger{display:flex;}
+  nav{display:none; position:absolute; top:var(--header-h); left:0; right:0; background:rgba(2,12,27,.97); flex-direction:column; gap:0; border-bottom:1px solid var(--border);}
+  nav.open{display:flex;}
+  nav a{padding:1rem 1.5rem; border-top:1px solid var(--border); width:100%; font-size:1rem; letter-spacing:2px;}
+  nav a::after{display:none;}
+}
+.page{position:relative; z-index:1;}
+.test-banner{
+  background:rgba(255,193,7,.1); border-bottom:1px solid rgba(255,193,7,.4); color:#ffc107;
+  text-align:center; font-size:.78rem; padding:.6rem 1rem; letter-spacing:.3px; position:relative; z-index:1;
+}
+.test-banner strong{color:#ffe083;}
+.steps{max-width:900px; margin:2.5rem auto 0; padding:0 5%; display:flex; justify-content:center; gap:.75rem; flex-wrap:wrap;}
+.step-chip{
+  display:flex; align-items:center; gap:.5rem; font-size:.72rem; letter-spacing:1px; text-transform:uppercase;
+  color:var(--text-muted); padding:.4rem .9rem; border:1px solid var(--border); border-radius:30px; font-family:'Orbitron',monospace;
+}
+.step-chip.active{color:var(--accent-green); border-color:var(--accent-green); background:rgba(0,230,118,.06);}
+.step-chip .n{width:18px; height:18px; border-radius:50%; background:var(--accent-green); color:var(--bg-dark); font-size:.65rem; font-weight:700; display:flex; align-items:center; justify-content:center;}
+.step-chip:not(.active) .n{background:var(--text-muted); color:var(--bg-dark);}
+.checkout-section{max-width:900px; margin:0 auto; padding:2.5rem 5% 5rem; display:grid; grid-template-columns:1.1fr .9fr; gap:2rem; align-items:start;}
+@media (max-width:760px){ .checkout-section{grid-template-columns:1fr;} }
+h1{font-family:'Orbitron',monospace; font-weight:800; font-size:clamp(1.5rem,5vw,2.1rem); margin-bottom:.5rem;}
+h1 span{color:var(--accent-green);}
+.checkout-subtitle{color:var(--text-muted); font-size:.95rem; margin-bottom:2rem;}
+.card{background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:2rem; backdrop-filter:blur(12px);}
+.card h2{font-family:'Orbitron',monospace; font-size:.9rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent-teal); margin-bottom:1.5rem;}
+.field{margin-bottom:1.25rem;}
+.field label{display:block; font-size:.78rem; color:var(--text-muted); margin-bottom:.4rem; text-transform:uppercase; letter-spacing:1px;}
+.field input, .field select, .field textarea{
+  width:100%; padding:.75rem 1rem; background:rgba(255,255,255,.03); border:1px solid var(--border);
+  border-radius:8px; color:var(--text-primary); font-family:inherit; font-size:.95rem; transition:border-color .3s;
+}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--accent-green);}
+.field textarea{resize:vertical; min-height:90px;}
+.field-row{display:grid; grid-template-columns:1fr 1fr; gap:1rem;}
+@media (max-width:480px){ .field-row{grid-template-columns:1fr;} }
+.field.invalid input, .field.invalid select{border-color:var(--danger);}
+.error-msg{display:none; color:var(--danger); font-size:.75rem; margin-top:.35rem;}
+.field.invalid .error-msg{display:block;}
+.btn{
+  padding:.9rem 2rem; border-radius:6px; text-decoration:none; font-weight:700; transition:.3s;
+  display:inline-flex; align-items:center; justify-content:center; gap:10px; border:1px solid var(--accent-green);
+  cursor:pointer; font-size:.95rem; width:100%;
+}
+.btn-primary{background:var(--accent-green); color:var(--bg-dark);}
+.btn-primary:hover{background:transparent; color:var(--accent-green);}
+.btn-primary:disabled{opacity:.6; cursor:not-allowed;}
+.secure-note{display:flex; align-items:center; gap:.5rem; justify-content:center; font-size:.75rem; color:var(--text-muted); margin-top:1rem;}
+.secure-note i{color:var(--accent-green);}
+.form-msg{display:none; font-size:.85rem; color:var(--danger); background:rgba(255,92,92,.08); border:1px solid rgba(255,92,92,.3); border-radius:8px; padding:.75rem 1rem; margin-bottom:1.25rem;}
+.summary-line{display:flex; justify-content:space-between; font-size:.9rem; color:var(--text-muted); padding:.6rem 0; border-bottom:1px solid var(--border);}
+.summary-line span:last-child{color:var(--text-primary);}
+.summary-total{display:flex; justify-content:space-between; margin-top:1rem; padding-top:1rem; border-top:1px solid var(--accent-green); font-size:1.1rem; font-weight:700; font-family:'Orbitron',monospace;}
+.summary-total span:last-child{color:var(--accent-green);}
+.trust-list{list-style:none; margin-top:1.5rem; display:flex; flex-direction:column; gap:.6rem;}
+.trust-list li{font-size:.82rem; color:var(--text-muted); display:flex; align-items:center; gap:.6rem;}
+.trust-list li i{color:var(--accent-green); width:16px;}
+.back-links{max-width:900px; margin:0 auto; padding:0 5%; display:flex; gap:1rem; font-size:.82rem; flex-wrap:wrap; position:relative; z-index:1;}
+.back-links a{color:var(--accent-teal); text-decoration:none;}
+.back-links a:hover{text-decoration:underline;}
+footer{padding:2rem; text-align:center; color:var(--text-muted); border-top:1px solid var(--border); font-size:.8rem; position:relative; z-index:1;}
+footer a{color:var(--text-muted); text-decoration:none;}
+footer a:hover{color:var(--accent-green);}
+
+/* ── Global mobile compaction: scales all rem-based sizing down on
+   smaller screens so big and small phones read the same, and shrinks
+   the header/footer specifically. No !important needed — this block
+   sits last in the cascade. ── */
+body { word-wrap: break-word; overflow-wrap: break-word; }
+@media (max-width: 768px) {
+  html { font-size: 93.75%; }   /* ~15px base */
+  :root { --header-h: 60px; }
+  .logo-link img { height: 36px; }
+}
+@media (max-width: 480px) {
+  html { font-size: 87.5%; }    /* ~14px base */
+  :root { --header-h: 54px; }
+  .logo-link img { height: 32px; }
+}
+@media (max-width: 360px) {
+  html { font-size: 81.25%; }   /* ~13px base */
+}
+footer {
+  padding: 1.25rem 1rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+@media (max-width: 480px) {
+  footer { padding: 1rem 0.75rem; font-size: 0.65rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="test-banner"><strong>Test Mode:</strong> This checkout runs on PayFast's sandbox — no real money moves yet. See code comments for going live.</div>
+
+  <header>
+    <a href="index.html" class="logo-link" aria-label="DigitMarkT Home"><img src="logo.jpg" alt="DigitMarkT Logo"></a>
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+      <a href="checkout.html" aria-current="page">Checkout</a>
+    </nav>
+  </header>
+
+  <div class="back-links" style="margin-top:1.5rem;">
+    <a href="index.html"><i class="fas fa-chevron-left"></i> Back to Home</a>
+    <a href="services.html">View All Services</a>
+  </div>
+
+  <div class="steps">
+    <div class="step-chip active"><span class="n">1</span> Details</div>
+    <div class="step-chip"><span class="n">2</span> Payment</div>
+    <div class="step-chip"><span class="n">3</span> Confirmation</div>
+  </div>
+
+  <section class="checkout-section">
+    <div>
+      <h1>Complete Your <span>Checkout</span></h1>
+      <p class="checkout-subtitle">You're one step away. Fill in your details below — you'll be redirected to PayFast's secure page to pay.</p>
+
+      <form class="card" id="checkout-form" novalidate>
+        <h2>Your Details</h2>
+        <div class="form-msg" id="form-msg">Please fix the highlighted fields below.</div>
+
+        <div class="field-row">
+          <div class="field" data-field="firstname">
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname" placeholder="Jane" required>
+            <div class="error-msg">First name is required.</div>
+          </div>
+          <div class="field" data-field="lastname">
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Doe" required>
+            <div class="error-msg">Last name is required.</div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field" data-field="email">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+            <div class="error-msg">Enter a valid email address.</div>
+          </div>
+          <div class="field" data-field="phone">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="0720000000" required>
+            <div class="error-msg">Enter a valid SA phone number (10 digits).</div>
+          </div>
+        </div>
+
+        <div class="field" data-field="service">
+          <label for="service">Service / Package</label>
+          <select id="service" name="service" required>
+            <option value="">Select an option</option>
+            <option value="web-dev" data-price="2500">Web Development — R2,500</option>
+            <option value="web-design" data-price="1800">Web Design — R1,800</option>
+            <option value="app-dev" data-price="4500">App Development — R4,500</option>
+            <option value="consulting" data-price="800">Consulting Session — R800</option>
+          </select>
+          <div class="error-msg">Please select a service.</div>
+        </div>
+
+        <div class="field">
+          <label for="notes">Order Notes (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Anything we should know before we start?"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn"><i class="fas fa-lock"></i> Proceed to Payment</button>
+        <div class="secure-note"><i class="fas fa-shield-alt"></i> Secure checkout via PayFast — your card details never touch this site</div>
+      </form>
+    </div>
+
+    <aside class="card">
+      <h2>Order Summary</h2>
+      <div class="summary-line"><span>Package</span><span id="sum-package">—</span></div>
+      <div class="summary-line"><span>Turnaround</span><span>Standard</span></div>
+      <div class="summary-line"><span>Support</span><span>Included</span></div>
+      <div class="summary-total"><span>Total</span><span id="sum-total">R 0.00</span></div>
+      <ul class="trust-list">
+        <li><i class="fas fa-check-circle"></i> 100% client satisfaction record</li>
+        <li><i class="fas fa-check-circle"></i> 24-hour response time</li>
+        <li><i class="fas fa-check-circle"></i> Direct WhatsApp support</li>
+      </ul>
+    </aside>
+  </section>
+
+  <footer>
+    &copy; 2026 <span style="color:var(--accent-green); font-weight:bold;">DigitMarkT</span> — Your Tasks Mastered. | <a href="privacy.html">Privacy Policy</a>
+  </footer>
+</div>
+
+<!--
+  PAYFAST INTEGRATION — READ BEFORE GOING LIVE
+  This form submits to PayFast's SANDBOX using PayFast's published sandbox
+  test credentials (merchant_id 10000100) — real payments are NOT charged.
+  TO GO LIVE:
+    1. Sign up at https://www.payfast.co.za and get your live Merchant ID/Key.
+    2. Replace PAYFAST_CONFIG.merchant_id and merchant_key below.
+    3. Set PAYFAST_CONFIG.sandbox to false.
+    4. Update the price map in the "service" <select> to your real pricing.
+-->
+<script>
+  const PAYFAST_CONFIG = {
+    sandbox: true,
+    merchant_id: '10000100',
+    merchant_key: '46f0cd694581a',
+    return_url: 'thank-you.html',
+    cancel_url: 'checkout.html',
+    notify_url: 'thank-you.html'
+  };
+
+  const hamburger = document.querySelector('.hamburger');
+  const nav = document.querySelector('nav');
+  hamburger.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    nav.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded', false);
+  }));
+
+  const form = document.getElementById('checkout-form');
+  const formMsg = document.getElementById('form-msg');
+  const submitBtn = document.getElementById('submit-btn');
+  const serviceSelect = document.getElementById('service');
+  const sumPackage = document.getElementById('sum-package');
+  const sumTotal = document.getElementById('sum-total');
+
+  function updateSummary(){
+    const opt = serviceSelect.options[serviceSelect.selectedIndex];
+    if (opt && opt.value){
+      const price = parseFloat(opt.dataset.price || '0');
+      sumPackage.textContent = opt.textContent.split('—')[0].trim();
+      sumTotal.textContent = 'R ' + price.toFixed(2);
+    } else {
+      sumPackage.textContent = '—';
+      sumTotal.textContent = 'R 0.00';
+    }
+  }
+  serviceSelect.addEventListener('change', updateSummary);
+
+  // Pre-select service from ?service=xxx when arriving from a service page link
+  (function preselectFromQuery(){
+    const params = new URLSearchParams(window.location.search);
+    const svc = params.get('service');
+    if (svc && [...serviceSelect.options].some(o => o.value === svc)){
+      serviceSelect.value = svc;
+    }
+    updateSummary();
+  })();
+
+  function setFieldError(name, isValid){
+    const fieldEl = form.querySelector('[data-field="' + name + '"]');
+    if (!fieldEl) return;
+    fieldEl.classList.toggle('invalid', !isValid);
+  }
+
+  function validate(){
+    let valid = true;
+    const firstname = document.getElementById('firstname').value.trim();
+    if (!firstname){ setFieldError('firstname', false); valid = false; } else setFieldError('firstname', true);
+
+    const lastname = document.getElementById('lastname').value.trim();
+    if (!lastname){ setFieldError('lastname', false); valid = false; } else setFieldError('lastname', true);
+
+    const email = document.getElementById('email').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailOk){ setFieldError('email', false); valid = false; } else setFieldError('email', true);
+
+    const phoneDigits = document.getElementById('phone').value.trim().replace(/\D/g, '');
+    const phoneOk = phoneDigits.length >= 9 && phoneDigits.length <= 12;
+    if (!phoneOk){ setFieldError('phone', false); valid = false; } else setFieldError('phone', true);
+
+    const service = serviceSelect.value;
+    if (!service){ setFieldError('service', false); valid = false; } else setFieldError('service', true);
+
+    return valid;
+  }
+
+  ['firstname', 'lastname', 'email', 'phone'].forEach(id => {
+    document.getElementById(id).addEventListener('blur', validate);
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    formMsg.style.display = 'none';
+    if (!validate()){
+      formMsg.style.display = 'block';
+      formMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to PayFast...';
+
+    const opt = serviceSelect.options[serviceSelect.selectedIndex];
+    const amount = parseFloat(opt.dataset.price).toFixed(2);
+    const itemName = opt.textContent.split('—')[0].trim();
+    const notes = document.getElementById('notes').value.trim();
+    const phoneDigits = document.getElementById('phone').value.replace(/\D/g, '');
+
+    const payfastUrl = PAYFAST_CONFIG.sandbox
+      ? 'https://sandbox.payfast.co.za/eng/process'
+      : 'https://www.payfast.co.za/eng/process';
+
+    const fields = {
+      merchant_id: PAYFAST_CONFIG.merchant_id,
+      merchant_key: PAYFAST_CONFIG.merchant_key,
+      return_url: PAYFAST_CONFIG.return_url,
+      cancel_url: PAYFAST_CONFIG.cancel_url,
+      notify_url: PAYFAST_CONFIG.notify_url,
+      name_first: document.getElementById('firstname').value.trim(),
+      name_last: document.getElementById('lastname').value.trim(),
+      email_address: document.getElementById('email').value.trim(),
+      cell_number: phoneDigits,
+      amount: amount,
+      item_name: itemName,
+      item_description: notes || (itemName + ' — DigitMarkT')
+    };
+
+    const hiddenForm = document.createElement('form');
+    hiddenForm.method = 'POST';
+    hiddenForm.action = payfastUrl;
+    Object.keys(fields).forEach(key => {
+      const input = document.createElement('input');
+      input.type = 'hidden'; input.name = key; input.value = fields[key];
+      hiddenForm.appendChild(input);
+    });
+    document.body.appendChild(hiddenForm);
+    hiddenForm.submit();
+  });
+</script>
+</body>
+</html>
