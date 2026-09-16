@@ -33,23 +33,12 @@ header{
 }
 .logo-link{display:flex; align-items:center; text-decoration:none; padding:5px; flex-shrink:0;}
 .logo-link img{height:42px; width:auto; object-fit:contain;}
-nav{display:flex; gap:1.6rem; align-items:center;}
-nav a{text-decoration:none; font-weight:600; font-size:.85rem; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; transition:color .3s; position:relative;}
-nav a::after{content:''; position:absolute; left:0; bottom:-3px; width:0; height:1px; background:var(--accent-green); transition:width .3s;}
-nav a:hover, nav a[aria-current="page"]{color:var(--accent-green);}
-nav a:hover::after, nav a[aria-current="page"]::after{width:100%;}
-.hamburger{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; z-index:1010;}
-.hamburger span{display:block; width:22px; height:2px; background:var(--accent-green); border-radius:2px; transition:all .3s;}
-.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.hamburger.open span:nth-child(2){opacity:0;}
-.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-@media (max-width:860px){
-  .hamburger{display:flex;}
-  nav{display:none; position:absolute; top:var(--header-h); left:0; right:0; background:rgba(2,12,27,.97); flex-direction:column; gap:0; border-bottom:1px solid var(--border);}
-  nav.open{display:flex;}
-  nav a{padding:1rem 1.5rem; border-top:1px solid var(--border); width:100%; font-size:1rem; letter-spacing:2px;}
-  nav a::after{display:none;}
+.header-slogan{
+  font-family:'Orbitron',monospace; font-size:.7rem; font-weight:700; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--accent-green); text-shadow:0 0 14px rgba(0,230,118,.45);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
+@media (max-width:480px){ .header-slogan{font-size:.58rem; letter-spacing:1.5px; max-width:52vw;} }
 .page{position:relative; z-index:1;}
 .test-banner{
   background:rgba(255,193,7,.1); border-bottom:1px solid rgba(255,193,7,.4); color:#ffc107;
@@ -142,20 +131,13 @@ footer {
   <div class="test-banner"><strong>Test Mode:</strong> This checkout runs on PayFast's sandbox — no real money moves yet. See code comments for going live.</div>
 
   <header>
-    <a href="index.html" class="logo-link" aria-label="DigitMarkT Home"><img src="logo.jpg" alt="DigitMarkT Logo"></a>
-    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="services.html">Services</a>
-      <a href="portfolio.html">Portfolio</a>
-      <a href="contact.html">Contact</a>
-      <a href="checkout.html" aria-current="page">Checkout</a>
-    </nav>
+    <a href="https://siya019910.github.io/DigitMarkT-second/index.html" class="logo-link" aria-label="DigitMarkT Home"><img src="logo.png" alt="DigitMarkT Logo"></a>
+    <span class="header-slogan">Your Tasks Mastered.</span>
   </header>
 
   <div class="back-links" style="margin-top:1.5rem;">
-    <a href="index.html"><i class="fas fa-chevron-left"></i> Back to Home</a>
-    <a href="services.html">View All Services</a>
+    <a href="https://siya019910.github.io/DigitMarkT-second/index.html"><i class="fas fa-chevron-left"></i> Back to Home</a>
+    <a href="https://siya019910.github.io/DigitMarkT-second/services.html">View All Services</a>
   </div>
 
   <div class="steps">
@@ -207,6 +189,9 @@ footer {
             <option value="web-design" data-price="1800">Web Design — R1,800</option>
             <option value="app-dev" data-price="4500">App Development — R4,500</option>
             <option value="consulting" data-price="800">Consulting Session — R800</option>
+            <option value="startup-strategy" data-price="3500">Startup & Venture Strategy — R3,500</option>
+            <option value="ai-automation" data-price="3000">AI & Workflow Automation — R3,000</option>
+            <option value="security-compliance" data-price="2200">Security & Compliance Fundamentals — R2,200</option>
           </select>
           <div class="error-msg">Please select a service.</div>
         </div>
@@ -236,7 +221,7 @@ footer {
   </section>
 
   <footer>
-    &copy; 2026 <span style="color:var(--accent-green); font-weight:bold;">DigitMarkT</span> — Your Tasks Mastered. | <a href="privacy.html">Privacy Policy</a>
+    &copy; 2026 <span style="color:var(--accent-green); font-weight:bold;">DigitMarkT</span> — Your Tasks Mastered. | <a href="https://siya019910.github.io/DigitMarkT-second/privacy.html">Privacy Policy</a>
   </footer>
 </div>
 
@@ -255,21 +240,10 @@ footer {
     sandbox: true,
     merchant_id: '10000100',
     merchant_key: '46f0cd694581a',
-    return_url: 'thank-you.html',
-    cancel_url: 'checkout.html',
-    notify_url: 'thank-you.html'
+    return_url: 'https://siya019910.github.io/thanks/',
+    cancel_url: 'https://siya019910.github.io/checkout/',
+    notify_url: 'https://siya019910.github.io/thanks/'
   };
-
-  const hamburger = document.querySelector('.hamburger');
-  const nav = document.querySelector('nav');
-  hamburger.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    hamburger.classList.toggle('open', open);
-    hamburger.setAttribute('aria-expanded', open);
-  });
-  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    nav.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded', false);
-  }));
 
   const form = document.getElementById('checkout-form');
   const formMsg = document.getElementById('form-msg');
